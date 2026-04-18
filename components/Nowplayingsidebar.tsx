@@ -260,7 +260,7 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
         </div>
       </div>
 
-      {/* About Modal - ArtistClient ilə eyni dizayn */}
+      
       {showAbout && (
         <div
           className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
@@ -278,7 +278,7 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
               <X size={20} />
             </button>
 
-            {/* Şəkil - object-contain + qara arxa fon, ArtistClient ilə eyni */}
+            
             <div className="relative w-full shrink-0 bg-black flex items-center justify-center" style={{ height: '45vh' }}>
               <img
                 src={aboutImages[aboutImgIndex] || previewImage}
@@ -315,7 +315,7 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
               )}
             </div>
 
-            {/* Posted By - mərkəzdə, ArtistClient ilə eyni */}
+           
             <div className="flex items-center justify-center gap-2 px-8 py-3">
               <img
                 src={artistData?.imageUrl}
@@ -327,7 +327,7 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
               </span>
             </div>
 
-            {/* Stats + Bio */}
+          
             <div className="p-8 flex gap-10">
               <div className="shrink-0 flex flex-col gap-6 min-w-[160px]">
                 {artistData?.worldRank && (
