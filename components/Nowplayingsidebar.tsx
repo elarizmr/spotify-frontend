@@ -1,8 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePlayerStore } from '../components/store/usePlayerStore';
+import { usePlayerStore } from './store/usePlayerStore';
 import { PanelRightClose, Ellipsis, Maximize2, Share2, ChevronLeft, ChevronRight, X, Check } from 'lucide-react';
+
+// Şəkil olmadıqda istifadə olunan default cover (SVG data URI — əlavə fayl lazım deyil)
+const DEFAULT_COVER =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23282828'/%3E%3Cpath d='M120 210V110l90-20v100' stroke='%23888' stroke-width='8' fill='none'/%3E%3Ccircle cx='110' cy='210' r='20' fill='%23888'/%3E%3Ccircle cx='200' cy='190' r='20' fill='%23888'/%3E%3C/svg%3E";
 
 interface NowPlayingSidebarProps {
   isOpen: boolean;
@@ -118,7 +122,8 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
     aboutImages[0] ||
     artistData?.bannerUrl ||
     artistData?.imageUrl ||
-    currentSong?.coverImg;
+    currentSong?.coverImg ||
+    DEFAULT_COVER;
 
   const fmtListeners = (n: number) => {
     if (!n) return '0';
@@ -168,7 +173,7 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
 
                 <div className="mb-5">
                   <img
-                    src={currentSong.coverImg || '/api/placeholder/300/300'}
+                    src={currentSong.coverImg || DEFAULT_COVER}
                     alt={currentSong.title}
                     className="w-full aspect-square object-cover rounded-lg shadow-lg"
                   />
@@ -318,7 +323,7 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
            
             <div className="flex items-center justify-center gap-2 px-8 py-3">
               <img
-                src={artistData?.imageUrl}
+                src={artistData?.imageUrl || DEFAULT_COVER}
                 className="w-7 h-7 rounded-full object-cover"
                 alt=""
               />

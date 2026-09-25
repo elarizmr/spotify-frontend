@@ -8,7 +8,7 @@ import Footer from '@/components/layout/Footer';
 import Providers from '@/components/Providers';
 import PlayerBar from '@/components/layout/Playerbar';
 import NowPlayingSidebar from '@/components/Nowplayingsidebar';
-import { usePlayerStore } from '@/components/store/usePlayerStore'; // ✅
+import { usePlayerStore } from '@/components/store/usePlayerStore'; 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,9 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
-  const { setLeftSidebar, setRightSidebar } = usePlayerStore(); // ✅
+  const { setLeftSidebar, setRightSidebar } = usePlayerStore(); 
 
-  // ✅ State dəyişəndə store-u yenilə
+ 
   useEffect(() => {
     setLeftSidebar(!sidebarCollapsed);
   }, [sidebarCollapsed]);

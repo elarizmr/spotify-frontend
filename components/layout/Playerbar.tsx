@@ -7,6 +7,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePlayerStore } from '../store/usePlayerStore';
 import LyricsPanel from './LyricsPanel';
 
+// Şəkil olmadıqda istifadə olunan default cover (SVG data URI — əlavə fayl lazım deyil)
+const DEFAULT_COVER =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23282828'/%3E%3Cpath d='M120 210V110l90-20v100' stroke='%23888' stroke-width='8' fill='none'/%3E%3Ccircle cx='110' cy='210' r='20' fill='%23888'/%3E%3Ccircle cx='200' cy='190' r='20' fill='%23888'/%3E%3C/svg%3E";
+
 const getToken = () => {
   if (typeof window === 'undefined') return null;
   return localStorage.getItem('token');
@@ -165,7 +169,7 @@ const PlayerBar = ({ onToggleSidebar }: PlayerBarProps) => {
       <div className="fixed bottom-0 left-0 right-0 z-[1000] flex items-center justify-between px-4 h-24 bg-black border-t border-zinc-900">
         <div className="flex items-center gap-3 w-[30%] min-w-[180px]">
           <div onClick={onToggleSidebar} className="h-14 w-14 bg-zinc-800 rounded-sm overflow-hidden flex-shrink-0 cursor-pointer">
-            <img src={currentSong?.coverImg || "/api/placeholder/56/56"} alt="Cover" className="object-cover w-full h-full" />
+            <img src={currentSong?.coverImg || DEFAULT_COVER} alt="Cover" className="object-cover w-full h-full" />
           </div>
           {currentSong && (
             <>
@@ -305,11 +309,11 @@ const PlayerBar = ({ onToggleSidebar }: PlayerBarProps) => {
                   transition={{ type: 'spring', damping: 30, stiffness: 200 }}
                   className="shrink-0 hidden md:block overflow-hidden"
                 >
-                  <img src={currentSong?.coverImg} className="w-full h-full object-cover rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.5)]" alt="Cover" />
+                  <img src={currentSong?.coverImg || DEFAULT_COVER} className="w-full h-full object-cover rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.5)]" alt="Cover" />
                 </motion.div>
 
                 <div className={`w-[300px] h-[300px] shrink-0 md:hidden ${showLyrics ? 'hidden' : 'block'}`}>
-                  <img src={currentSong?.coverImg} className="w-full h-full object-cover rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.5)]" alt="Cover" />
+                  <img src={currentSong?.coverImg || DEFAULT_COVER} className="w-full h-full object-cover rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.5)]" alt="Cover" />
                 </div>
 
                 <AnimatePresence>
@@ -337,7 +341,7 @@ const PlayerBar = ({ onToggleSidebar }: PlayerBarProps) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 mt-12">
                   <div className="lg:col-span-8 relative rounded-2xl overflow-hidden bg-zinc-900/40 group min-h-[400px]">
                     <img
-                      src={artistData?.bannerUrl || artistData?.imageUrl || currentSong?.coverImg}
+                      src={artistData?.bannerUrl || artistData?.imageUrl || currentSong?.coverImg || DEFAULT_COVER}
                       className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition duration-700"
                       alt=""
                     />
@@ -381,7 +385,7 @@ const PlayerBar = ({ onToggleSidebar }: PlayerBarProps) => {
                   <div className="lg:col-span-6 rounded-2xl bg-zinc-900/40 p-8 flex flex-col gap-4">
                     <h3 className="text-white font-bold text-xl">Merch</h3>
                     <div className="flex items-center gap-4 hover:bg-white/10 p-4 rounded-lg transition cursor-pointer">
-                      <img src={currentSong?.coverImg} className="w-16 h-16 rounded shadow-md object-cover" alt="" />
+                      <img src={currentSong?.coverImg || DEFAULT_COVER} className="w-16 h-16 rounded shadow-md object-cover" alt="" />
                       <div className="flex-1 min-w-0">
                         <p className="text-white text-sm font-bold truncate">{currentSong?.title} — Official Album</p>
                         <p className="text-zinc-400 text-xs">Official Merchandise</p>
@@ -397,7 +401,7 @@ const PlayerBar = ({ onToggleSidebar }: PlayerBarProps) => {
                     </div>
                     <div className="flex items-center gap-4 hover:bg-white/10 p-4 rounded-lg transition cursor-pointer">
                       <div className="w-14 h-14 bg-zinc-800 rounded overflow-hidden shrink-0">
-                        <img src="/api/placeholder/60/60" className="w-full h-full object-cover" alt="" />
+                        <img src={DEFAULT_COVER} className="w-full h-full object-cover" alt="" />
                       </div>
                       <div className="min-w-0">
                         <p className="text-white text-sm font-bold truncate">Next Song</p>
