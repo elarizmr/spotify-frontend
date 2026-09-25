@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { usePlayerStore } from "../../../components/store/usePlayerStore";
@@ -21,7 +22,7 @@ export default function ArtistClient() {
     const uid = localStorage.getItem('userId');
     setUserId(uid);
     if (uid) {
-      fetch(`http://localhost:5001/api/auth/liked`, {
+      fetch(`${API_URL}/api/auth/liked`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
         .then(r => r.json())
@@ -36,7 +37,7 @@ export default function ArtistClient() {
     e.stopPropagation();
     const token = localStorage.getItem('token');
     if (!token) return;
-    const res = await fetch(`http://localhost:5001/api/auth/liked/${songId}`, {
+    const res = await fetch(`${API_URL}/api/auth/liked/${songId}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -46,13 +47,13 @@ export default function ArtistClient() {
 
   const { data: artistData } = useQuery({
     queryKey: ["artist-detail", artistName],
-    queryFn: () => fetch(`http://localhost:5001/api/artists/name/${encodeURIComponent(artistName)}`).then(res => res.json()),
+    queryFn: () => fetch(`${API_URL}/api/artists/name/${encodeURIComponent(artistName)}`).then(res => res.json()),
     enabled: !!artistName,
   });
 
   const { data: songsData, isLoading } = useQuery({
     queryKey: ["songs", artistName],
-    queryFn: () => fetch(`http://localhost:5001/api/songs/artist/${encodeURIComponent(artistName)}`).then(res => res.json()),
+    queryFn: () => fetch(`${API_URL}/api/songs/artist/${encodeURIComponent(artistName)}`).then(res => res.json()),
     enabled: !!artistName,
   });
 
@@ -62,7 +63,7 @@ export default function ArtistClient() {
   const followersCount = artist?.followers?.length || 0;
 
   const followMutation = useMutation({
-    mutationFn: () => fetch(`http://localhost:5001/api/artists/${artist._id}/follow`, {
+    mutationFn: () => fetch(`${API_URL}/api/artists/${artist._id}/follow`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId }),

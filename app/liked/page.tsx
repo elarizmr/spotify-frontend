@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { usePlayerStore } from "../../components/store/usePlayerStore";
 import { Play, Pause, Heart, Clock, Search, ListFilter, Check, ChevronDown, X } from "lucide-react";
@@ -38,7 +39,7 @@ export default function LikedSongsPage() {
     queryKey: ["liked-songs"],
     enabled: !!token,
     queryFn: async () => {
-      const res = await fetch("http://localhost:5001/api/auth/liked", {
+      const res = await fetch(`${API_URL}/api/auth/liked`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch liked songs");
@@ -48,7 +49,7 @@ export default function LikedSongsPage() {
 
   const unlikeMutation = useMutation({
     mutationFn: async (songId: string) => {
-      const res = await fetch(`http://localhost:5001/api/auth/liked/${songId}`, {
+      const res = await fetch(`${API_URL}/api/auth/liked/${songId}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });

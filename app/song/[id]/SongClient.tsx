@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { usePlayerStore } from "../../../components/store/usePlayerStore";
@@ -16,7 +17,7 @@ export default function SongClient() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
-    fetch(`http://localhost:5001/api/auth/liked`, {
+    fetch(`${API_URL}/api/auth/liked`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(r => r.json())
@@ -30,7 +31,7 @@ export default function SongClient() {
     e.stopPropagation();
     const token = localStorage.getItem('token');
     if (!token) return;
-    const res = await fetch(`http://localhost:5001/api/auth/liked/${songId}`, {
+    const res = await fetch(`${API_URL}/api/auth/liked/${songId}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -40,13 +41,13 @@ export default function SongClient() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["song", id],
-    queryFn: () => fetch(`http://localhost:5001/api/songs/${id}`).then(res => res.json()),
+    queryFn: () => fetch(`${API_URL}/api/songs/${id}`).then(res => res.json()),
     enabled: !!id,
   });
 
   const { data: artistData } = useQuery({
     queryKey: ["artists"],
-    queryFn: () => fetch("http://localhost:5001/api/artists").then(res => res.json())
+    queryFn: () => fetch(`${API_URL}/api/artists`).then(res => res.json())
   });
 
   if (isLoading) return <div className="text-white p-6">Yüklənir...</div>;

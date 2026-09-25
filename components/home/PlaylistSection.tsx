@@ -1,5 +1,5 @@
 'use client';
-
+import { API_URL } from "@/lib/config";
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Play, MoreHorizontal, Plus, ChevronRight, ChevronLeft, VolumeX } from 'lucide-react';
@@ -35,7 +35,7 @@ export default function PlaylistSection({ isLeftSidebarOpen, isRightSidebarOpen 
 
   const { data: allSongsData } = useQuery({
     queryKey: ['all-songs'],
-    queryFn: () => fetch('http://localhost:5001/api/songs').then(r => r.json()),
+    queryFn: () => fetch(`${API_URL}/api/songs`).then(r => r.json()),
   });
 
   const allSongs = allSongsData?.songs || [];

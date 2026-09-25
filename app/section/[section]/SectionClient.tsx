@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
@@ -29,7 +30,7 @@ export default function SectionClient() {
 
   const { data: allSongsData } = useQuery({
     queryKey: ["all-songs"],
-    queryFn: () => fetch("http://localhost:5001/api/songs").then(r => r.json()),
+    queryFn: () => fetch(`${API_URL}/api/songs`).then(r => r.json()),
     enabled: !!decodedSection,
   });
 
@@ -43,7 +44,7 @@ export default function SectionClient() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    fetch("http://localhost:5001/api/auth/liked", {
+    fetch(`${API_URL}/api/auth/liked`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(r => r.json())
@@ -57,7 +58,7 @@ export default function SectionClient() {
     e.stopPropagation();
     const token = localStorage.getItem("token");
     if (!token) return;
-    const res = await fetch(`http://localhost:5001/api/auth/liked/${songId}`, {
+    const res = await fetch(`${API_URL}/api/auth/liked/${songId}`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
     });

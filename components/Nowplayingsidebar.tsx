@@ -1,5 +1,5 @@
 'use client';
-
+import { API_URL } from "@/lib/config";
 import { useState, useEffect } from 'react';
 import { usePlayerStore } from './store/usePlayerStore';
 import { PanelRightClose, Ellipsis, Maximize2, Share2, ChevronLeft, ChevronRight, X, Check } from 'lucide-react';
@@ -37,7 +37,7 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
 
     const fetchArtist = async () => {
       try {
-        const res = await fetch(`http://localhost:5001/api/artists/name/${encodeURIComponent(currentSong.artist)}`);
+        const res = await fetch(`${API_URL}/api/artists/name/${encodeURIComponent(currentSong.artist)}`);
         const data = await res.json();
         if (data.success && data.artist) {
           setArtistId(data.artist._id);
@@ -60,7 +60,7 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
     if (!currentSong?._id) return;
     const token = localStorage.getItem('token');
     if (!token) return;
-    fetch(`http://localhost:5001/api/auth/liked`, {
+    fetch(`${API_URL}/api/auth/liked`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(r => r.json())
@@ -80,7 +80,7 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
     if (!userId) return;
     setLoadingFollow(true);
     try {
-      const res = await fetch(`http://localhost:5001/api/artists/${artistId}/follow`, {
+      const res = await fetch(`${API_URL}/api/artists/${artistId}/follow`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId }),
@@ -101,7 +101,7 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
     if (!currentSong?._id) return;
     const token = localStorage.getItem('token');
     if (!token) return;
-    const res = await fetch(`http://localhost:5001/api/auth/liked/${currentSong._id}`, {
+    const res = await fetch(`${API_URL}/api/auth/liked/${currentSong._id}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` }
     });

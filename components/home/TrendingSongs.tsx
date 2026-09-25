@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
 import { usePlayerStore } from "../store/usePlayerStore";
 import { useRouter } from "next/navigation";
@@ -9,7 +10,7 @@ export default function TrendingSongs() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["trending-random"],
-    queryFn: () => fetch("http://localhost:5001/api/songs/random?limit=8").then(res => res.json()),
+    queryFn: () => fetch(`${API_URL}/api/songs/random?limit=8`).then(res => res.json()),
     staleTime: 0, 
   });
 

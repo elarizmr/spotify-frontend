@@ -1,5 +1,5 @@
 'use client';
-
+import { API_URL } from "@/lib/config";
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Play } from 'lucide-react';
@@ -15,7 +15,7 @@ export default function RadioSection() {
 
   const { data: artistsData } = useQuery({
     queryKey: ['artists'],
-    queryFn: () => fetch('http://localhost:5001/api/artists').then(r => r.json()),
+    queryFn: () => fetch(`${API_URL}/api/artists`).then(r => r.json()),
   });
 
   const artists = artistsData?.artists || [];

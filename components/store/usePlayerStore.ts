@@ -1,4 +1,5 @@
 'use client';
+import { API_URL } from "@/lib/config";
 import { create } from 'zustand';
 
 interface Song {
@@ -43,7 +44,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
       const filtered = recent.filter((s: any) => s._id !== song._id);
       const updated = [song, ...filtered].slice(0, 10);
       localStorage.setItem("recentSongs", JSON.stringify(updated));
-      fetch(`http://localhost:5001/api/songs/${song._id}/play`, { method: 'POST' }).catch(() => {});
+      fetch(`${API_URL}/api/songs/${song._id}/play`, { method: 'POST' }).catch(() => {});
     }
     set({ currentSong: song, isPlaying: true });
   },

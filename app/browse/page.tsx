@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import { useRouter } from "next/navigation";
 import { usePlayerStore } from "../../components/store/usePlayerStore";
 import { useQuery } from "@tanstack/react-query";
@@ -25,7 +26,7 @@ export default function BrowsePage() {
 
   const { data: songsData } = useQuery({
     queryKey: ["songs"],
-    queryFn: () => fetch("http://localhost:5001/api/songs").then(res => res.json()),
+    queryFn: () => fetch(`${API_URL}/api/songs`).then(res => res.json()),
   });
 
   const handleCategoryPlay = (e: React.MouseEvent, categoryName: string) => {

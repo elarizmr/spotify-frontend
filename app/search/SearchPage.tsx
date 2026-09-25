@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { usePlayerStore } from "../../components/store/usePlayerStore";
@@ -13,13 +14,13 @@ export default function SearchPage() {
 
   const { data: songsData, isLoading: songsLoading } = useQuery({
     queryKey: ["search-songs", q],
-    queryFn: () => fetch(`http://localhost:5001/api/songs/search?q=${encodeURIComponent(q)}`).then(res => res.json()),
+    queryFn: () => fetch(`${API_URL}/api/songs/search?q=${encodeURIComponent(q)}`).then(res => res.json()),
     enabled: !!q,
   });
 
   const { data: artistsData, isLoading: artistsLoading } = useQuery({
     queryKey: ["search-artists", q],
-    queryFn: () => fetch("http://localhost:5001/api/artists").then(res => res.json()),
+    queryFn: () => fetch(`${API_URL}/api/artists`).then(res => res.json()),
     enabled: !!q,
   });
 

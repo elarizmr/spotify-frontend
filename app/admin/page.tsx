@@ -1,5 +1,5 @@
 "use client";
-
+import { API_URL } from "@/lib/config";
 import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash2, Edit2, Upload, Music, Image as ImageIcon, Users, X, LogOut } from "lucide-react";
@@ -88,12 +88,12 @@ export default function AdminPage() {
 
   const { data: songsData } = useQuery<{ songs: Song[] }>({
     queryKey: ["songs"],
-    queryFn: async () => (await fetch("http://localhost:5001/api/songs")).json(),
+    queryFn: async () => (await fetch(`${API_URL}/api/songs`)).json(),
   });
 
   const { data: artistsData } = useQuery<{ artists: Artist[] }>({
     queryKey: ["artists"],
-    queryFn: async () => (await fetch("http://localhost:5001/api/artists")).json(),
+    queryFn: async () => (await fetch(`${API_URL}/api/artists`)).json(),
   });
 
   const songs = songsData?.songs ?? [];
@@ -102,8 +102,8 @@ export default function AdminPage() {
   const songMutation = useMutation({
     mutationFn: async (data: FormData) => {
       const url = modalMode === "add"
-        ? "http://localhost:5001/api/songs/add"
-        : `http://localhost:5001/api/songs/${editingId}`;
+        ? `${API_URL}/api/songs/add`
+        : `${API_URL}/api/songs/${editingId}`;
       const method = modalMode === "add" ? "POST" : "PUT";
       const res = await fetch(url, { method, body: data, headers: authHeaders() });
       if (res.status === 403) { setAccessDenied(true); throw new Error("Admin deyilsiniz"); }
@@ -118,7 +118,7 @@ export default function AdminPage() {
 
   const deleteSongMutation = useMutation({
     mutationFn: async (id: string) => {
-      const res = await fetch(`http://localhost:5001/api/songs/${id}`, {
+      const res = await fetch(`${API_URL}/api/songs/${id}`, {
         method: "DELETE",
         headers: authHeaders(),
       });
@@ -130,8 +130,8 @@ export default function AdminPage() {
   const artistMutation = useMutation({
     mutationFn: async (data: FormData) => {
       const url = artistModal === "add"
-        ? "http://localhost:5001/api/artists/add"
-        : `http://localhost:5001/api/artists/${editingArtistId}`;
+        ? `${API_URL}/api/artists/add`
+        : `${API_URL}/api/artists/${editingArtistId}`;
       const method = artistModal === "add" ? "POST" : "PUT";
       const res = await fetch(url, { method, body: data, headers: authHeaders() });
       if (res.status === 403) { setAccessDenied(true); throw new Error("Admin deyilsiniz"); }
@@ -145,7 +145,7 @@ export default function AdminPage() {
 
   const deleteArtistMutation = useMutation({
     mutationFn: async (id: string) => {
-      const res = await fetch(`http://localhost:5001/api/artists/${id}`, {
+      const res = await fetch(`${API_URL}/api/artists/${id}`, {
         method: "DELETE",
         headers: authHeaders(),
       });

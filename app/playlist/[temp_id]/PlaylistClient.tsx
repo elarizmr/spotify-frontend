@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { usePlayerStore } from "../../../components/store/usePlayerStore";
 import { useParams, useRouter } from "next/navigation";
@@ -18,7 +19,7 @@ export default function PlaylistClient() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["playlists"],
-    queryFn: () => fetch("http://localhost:5001/api/auth/playlists", {
+    queryFn: () => fetch(`${API_URL}/api/auth/playlists`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => res.json()),
     enabled: !!token,
@@ -26,13 +27,13 @@ export default function PlaylistClient() {
 
   const { data: allSongsData } = useQuery({
     queryKey: ["songs"],
-    queryFn: () => fetch("http://localhost:5001/api/songs").then(res => res.json()),
+    queryFn: () => fetch(`${API_URL}/api/songs`).then(res => res.json()),
   });
 
   const deletePlaylistMutation = useMutation({
     mutationFn: () => {
       const t = localStorage.getItem('token');
-      return fetch(`http://localhost:5001/api/auth/playlists/${temp_id}`, {
+      return fetch(`${API_URL}/api/auth/playlists/${temp_id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${t}` }
       }).then(res => res.json());
@@ -46,7 +47,7 @@ export default function PlaylistClient() {
   const addSongMutation = useMutation({
     mutationFn: (songId: string) => {
       const t = localStorage.getItem('token');
-      return fetch(`http://localhost:5001/api/auth/playlists/${temp_id}/songs/${songId}`, {
+      return fetch(`${API_URL}/api/auth/playlists/${temp_id}/songs/${songId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${t}` }
       }).then(res => res.json());

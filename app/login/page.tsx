@@ -1,5 +1,5 @@
 "use client";
-
+import { API_URL } from "@/lib/config";
 import { useState } from "react";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ export default function Login() {
 
   const mutation = useMutation({
     mutationFn: async (loginData: any) => {
-      const res = await fetch("http://localhost:5001/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),

@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import React from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -10,7 +11,7 @@ const ArtistSection = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["artists"],
-    queryFn: () => fetch("http://localhost:5001/api/artists").then(res => {
+    queryFn: () => fetch(`${API_URL}/api/artists`).then(res => {
       if (!res.ok) throw new Error("Server cavab vermədi");
       return res.json();
     })
@@ -18,7 +19,7 @@ const ArtistSection = () => {
 
   const { data: songsData, isLoading: songsLoading } = useQuery({
     queryKey: ["trending-random"],
-    queryFn: () => fetch("http://localhost:5001/api/songs/random?limit=8").then(res => res.json()),
+    queryFn: () => fetch(`${API_URL}/api/songs/random?limit=8`).then(res => res.json()),
     staleTime: 0,
   });
 
@@ -31,7 +32,7 @@ const ArtistSection = () => {
   const handlePlayArtist = async (e: React.MouseEvent, artistName: string) => {
     e.stopPropagation();
     try {
-      const res = await fetch(`http://localhost:5001/api/songs/artist/${encodeURIComponent(artistName)}`);
+      const res = await fetch(`${API_URL}/api/songs/artist/${encodeURIComponent(artistName)}`);
       const data = await res.json();
       const songs = data?.songs || [];
       if (songs.length > 0) {

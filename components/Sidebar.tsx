@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Heart, Plus, Music, PanelRightOpen, PanelRightClose, Maximize2, Minimize2, Search, List } from "lucide-react";
@@ -43,7 +44,7 @@ export default function Sidebar({ isCollapsed = false, onToggle, isExpanded = fa
 
   const { data: playlistData } = useQuery({
     queryKey: ["playlists"],
-    queryFn: () => fetch("http://localhost:5001/api/auth/playlists", {
+    queryFn: () => fetch(`${API_URL}/api/auth/playlists`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => res.json()),
     enabled: !!token,
@@ -57,7 +58,7 @@ export default function Sidebar({ isCollapsed = false, onToggle, isExpanded = fa
 
   const { data: likedData } = useQuery({
     queryKey: ["liked-songs"],
-    queryFn: () => fetch("http://localhost:5001/api/auth/liked", {
+    queryFn: () => fetch(`${API_URL}/api/auth/liked`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => res.json()),
     enabled: !!token,
@@ -65,7 +66,7 @@ export default function Sidebar({ isCollapsed = false, onToggle, isExpanded = fa
 
   const { data: followedArtistsData } = useQuery({
     queryKey: ["followed-artists", userId],
-    queryFn: () => fetch(`http://localhost:5001/api/artists/followed/${userId}`).then(res => res.json()),
+    queryFn: () => fetch(`${API_URL}/api/artists/followed/${userId}`).then(res => res.json()),
     enabled: !!userId,
   });
 
@@ -111,7 +112,7 @@ export default function Sidebar({ isCollapsed = false, onToggle, isExpanded = fa
 
   const createPlaylist = async () => {
     if (!newPlaylistName.trim() || !token) return;
-    await fetch("http://localhost:5001/api/auth/playlists", {
+    await fetch(`${API_URL}/api/auth/playlists`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/config";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
@@ -16,19 +17,19 @@ export default function RadioClient() {
 
   const { data: artistData } = useQuery({
     queryKey: ["artist-detail", decodedName],
-    queryFn: () => fetch(`http://localhost:5001/api/artists/name/${encodeURIComponent(decodedName)}`).then(r => r.json()),
+    queryFn: () => fetch(`${API_URL}/api/artists/name/${encodeURIComponent(decodedName)}`).then(r => r.json()),
     enabled: !!decodedName,
   });
 
   const { data: allSongsData } = useQuery({
     queryKey: ["all-songs"],
-    queryFn: () => fetch("http://localhost:5001/api/songs").then(r => r.json()),
+    queryFn: () => fetch(`${API_URL}/api/songs`).then(r => r.json()),
     enabled: !!decodedName,
   });
 
   const { data: allArtistsData } = useQuery({
     queryKey: ["artists"],
-    queryFn: () => fetch("http://localhost:5001/api/artists").then(r => r.json()),
+    queryFn: () => fetch(`${API_URL}/api/artists`).then(r => r.json()),
   });
 
   const artist = artistData?.artist;
@@ -51,7 +52,7 @@ export default function RadioClient() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
-    fetch(`http://localhost:5001/api/auth/liked`, {
+    fetch(`${API_URL}/api/auth/liked`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(r => r.json())
@@ -65,7 +66,7 @@ export default function RadioClient() {
     e.stopPropagation();
     const token = localStorage.getItem('token');
     if (!token) return;
-    const res = await fetch(`http://localhost:5001/api/auth/liked/${songId}`, {
+    const res = await fetch(`${API_URL}/api/auth/liked/${songId}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` }
     });
