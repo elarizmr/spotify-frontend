@@ -73,21 +73,21 @@ export default function SongClient() {
   return (
     <div className="min-h-screen bg-[#121212]">
       {/* Üst banner */}
-      <div className="relative bg-gradient-to-b from-[#8b0000] via-[#5a0000] to-[#121212] p-8 pb-6">
-        <div className="flex items-end gap-6">
+      <div className="relative bg-gradient-to-b from-[#8b0000] via-[#5a0000] to-[#121212] p-4 sm:p-8 pb-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6 text-center sm:text-left">
           <img
             src={song?.coverImg || "https://via.placeholder.com/220"}
             alt={song?.title}
-            className="w-[220px] h-[220px] shadow-[0_8px_40px_rgba(0,0,0,0.6)] rounded-sm flex-shrink-0"
+            className="w-40 h-40 sm:w-[220px] sm:h-[220px] shadow-[0_8px_40px_rgba(0,0,0,0.6)] rounded-sm flex-shrink-0"
           />
-          <div className="flex flex-col gap-2 pb-2">
-            <span className="text-white text-sm font-medium">
+          <div className="flex flex-col gap-2 pb-2 min-w-0">
+            <span className="text-white text-xs sm:text-sm font-medium">
               {song?.album ? "Album" : "Single"}
             </span>
-            <h1 className="text-white font-extrabold leading-none" style={{ fontSize: 'clamp(2rem, 6vw, 5rem)' }}>
+            <h1 className="text-white font-extrabold leading-none break-words" style={{ fontSize: 'clamp(1.75rem, 6vw, 5rem)' }}>
               {song?.title}
             </h1>
-            <div className="flex items-center gap-2 mt-3">
+            <div className="flex items-center justify-center sm:justify-start flex-wrap gap-2 mt-2 sm:mt-3">
               {artist?.imageUrl && (
                 <img
                   src={artist.imageUrl}
@@ -112,27 +112,27 @@ export default function SongClient() {
       </div>
 
       {/* Play + Like düymələri */}
-      <div className="px-8 py-5 flex items-center gap-5 bg-gradient-to-b from-[#1a0000] to-transparent">
+      <div className="px-4 sm:px-8 py-4 sm:py-5 flex items-center gap-4 sm:gap-5 bg-gradient-to-b from-[#1a0000] to-transparent">
         <button
           onClick={handlePlay}
-          className="bg-[#1ed760] rounded-full p-4 hover:scale-105 transition-transform shadow-lg"
+          className="bg-[#1ed760] rounded-full p-3 sm:p-4 hover:scale-105 transition-transform shadow-lg shrink-0"
         >
           {isCurrentSong && isPlaying
-            ? <Pause size={28} className="text-black fill-black" />
-            : <Play size={28} className="text-black fill-black ml-1" />
+            ? <Pause size={22} className="sm:w-7 sm:h-7 text-black fill-black" />
+            : <Play size={22} className="sm:w-7 sm:h-7 text-black fill-black ml-0.5 sm:ml-1" />
           }
         </button>
 
         <button
           onClick={(e) => song && toggleLike(song._id, e)}
-          className="hover:scale-110 transition"
+          className="hover:scale-110 transition shrink-0"
         >
           {isLiked ? (
-            <div className="w-[28px] h-[28px] bg-[#1ed760] rounded-full flex items-center justify-center">
-              <Check size={16} className="text-black" strokeWidth={3} />
+            <div className="w-6 h-6 sm:w-7 sm:h-7 bg-[#1ed760] rounded-full flex items-center justify-center">
+              <Check size={14} className="sm:w-4 sm:h-4 text-black" strokeWidth={3} />
             </div>
           ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400 hover:text-white transition">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sm:w-7 sm:h-7 text-zinc-400 hover:text-white transition">
               <circle cx="12" cy="12" r="10" />
               <line x1="12" y1="8" x2="12" y2="16" />
               <line x1="8" y1="12" x2="16" y2="12" />
@@ -142,17 +142,17 @@ export default function SongClient() {
       </div>
 
       {/* Mahnı siyahısı */}
-      <div className="px-8">
-        <div className="grid grid-cols-[16px_1fr_120px_40px_80px] gap-4 text-zinc-400 text-sm px-4 pb-3 border-b border-zinc-800 mb-1">
+      <div className="px-4 sm:px-8">
+        <div className="grid grid-cols-[16px_1fr_40px_50px] sm:grid-cols-[16px_1fr_120px_40px_80px] gap-2 sm:gap-4 text-zinc-400 text-sm px-2 sm:px-4 pb-3 border-b border-zinc-800 mb-1">
           <span>#</span>
           <span>Title</span>
-          <span className="text-right">Plays</span>
+          <span className="text-right hidden sm:block">Plays</span>
           <span></span>
           <span className="text-right flex items-center justify-end"><Clock size={14} /></span>
         </div>
 
         <div
-          className="grid grid-cols-[16px_1fr_120px_40px_80px] gap-4 items-center px-4 py-3 rounded-md hover:bg-zinc-800/60 group cursor-pointer"
+          className="grid grid-cols-[16px_1fr_40px_50px] sm:grid-cols-[16px_1fr_120px_40px_80px] gap-2 sm:gap-4 items-center px-2 sm:px-4 py-2 sm:py-3 rounded-md hover:bg-zinc-800/60 group cursor-pointer"
           onClick={handlePlay}
         >
           <div className="flex items-center justify-center w-5 h-5">
@@ -174,24 +174,24 @@ export default function SongClient() {
             )}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <img
               src={song?.coverImg || "https://via.placeholder.com/40"}
               alt={song?.title}
-              className="w-10 h-10 rounded object-cover"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded object-cover shrink-0"
             />
-            <div>
-              <p className={`font-medium ${isCurrentSong ? 'text-[#1ed760]' : 'text-white'}`}>
+            <div className="min-w-0">
+              <p className={`font-medium truncate ${isCurrentSong ? 'text-[#1ed760]' : 'text-white'}`}>
                 {song?.title}
               </p>
-              <p className="text-zinc-400 text-sm hover:underline cursor-pointer"
+              <p className="text-zinc-400 text-sm truncate hover:underline cursor-pointer"
                 onClick={e => { e.stopPropagation(); router.push(`/artist/${encodeURIComponent(song?.artist)}`); }}>
                 {song?.artist}
               </p>
             </div>
           </div>
 
-          <span className="text-zinc-400 text-sm text-right">
+          <span className="hidden sm:block text-zinc-400 text-sm text-right">
             {song?.plays ? song.plays.toLocaleString('en-US') : '—'}
           </span>
 
@@ -200,11 +200,11 @@ export default function SongClient() {
             className="flex items-center justify-center hover:scale-110 transition"
           >
             {isLiked ? (
-              <div className="w-[18px] h-[18px] bg-[#1ed760] rounded-full flex items-center justify-center">
-                <Check size={12} className="text-black" strokeWidth={3} />
+              <div className="w-4 h-4 sm:w-[18px] sm:h-[18px] bg-[#1ed760] rounded-full flex items-center justify-center">
+                <Check size={11} className="sm:w-3 sm:h-3 text-black" strokeWidth={3} />
               </div>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400 hover:text-white transition">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sm:w-[18px] sm:h-[18px] text-zinc-400 hover:text-white transition">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="16" />
                 <line x1="8" y1="12" x2="16" y2="12" />
@@ -220,19 +220,19 @@ export default function SongClient() {
 
       {/* Artist bölməsi */}
       {artist && (
-        <div className="px-8 mt-10 mb-10">
-          <h2 className="text-white font-bold text-xl mb-4">About the artist</h2>
+        <div className="px-4 sm:px-8 mt-8 sm:mt-10 mb-10">
+          <h2 className="text-white font-bold text-lg sm:text-xl mb-4">About the artist</h2>
           <div
-            className="flex items-center gap-4 p-4 rounded-xl hover:bg-zinc-800/50 cursor-pointer transition"
+            className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl hover:bg-zinc-800/50 cursor-pointer transition"
             onClick={() => router.push(`/artist/${encodeURIComponent(song?.artist)}`)}
           >
             <img
               src={artist.imageUrl}
               alt={artist.name}
-              className="w-20 h-20 rounded-full object-cover shadow-lg"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover shadow-lg shrink-0"
             />
-            <div>
-              <p className="text-white font-bold text-lg hover:underline">{artist.name}</p>
+            <div className="min-w-0">
+              <p className="text-white font-bold text-base sm:text-lg hover:underline truncate">{artist.name}</p>
               {artist.monthlyListeners > 0 && (
                 <p className="text-zinc-400 text-xs mt-0.5">{artist.monthlyListeners.toLocaleString('en-US')} monthly listeners</p>
               )}

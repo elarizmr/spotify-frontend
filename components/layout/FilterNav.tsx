@@ -15,10 +15,10 @@ export default function FilterNav({ bgColor = '#121212', onFilterChange }: Filte
 
   useEffect(() => {
     const container = navRef.current?.closest('main') || window;
-    
+
     const handleScroll = () => {
-      const scrollTop = container instanceof Window 
-        ? window.scrollY 
+      const scrollTop = container instanceof Window
+        ? window.scrollY
         : (container as Element).scrollTop;
       setIsSticky(scrollTop > 10);
     };
@@ -41,12 +41,12 @@ export default function FilterNav({ bgColor = '#121212', onFilterChange }: Filte
         backdropFilter: isSticky ? 'blur(12px)' : 'none',
       }}
     >
-      <div className="flex items-center gap-2 px-6 py-4">
+      <div className="flex items-center gap-2 px-4 md:px-6 py-3 md:py-4 overflow-x-auto no-scrollbar">
         {filters.map(f => (
           <button
             key={f}
             onClick={() => handleFilter(f)}
-            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition
+            className={`shrink-0 px-3.5 md:px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold transition whitespace-nowrap
               ${active === f
                 ? 'bg-white text-black'
                 : 'bg-[#2a2a2a] text-white hover:bg-[#3a3a3a]'

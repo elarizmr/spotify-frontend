@@ -17,7 +17,6 @@ function parseLRC(raw: string): LyricLine[] {
   const result: LyricLine[] = [];
 
   raw.split('\n').forEach(line => {
-   
     const m = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\](?:\[end:[^\]]+\])?\s*(.*)/);
     if (m) {
       const mins = parseInt(m[1]);
@@ -90,11 +89,11 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-6 pt-8 px-2">
+      <div className="flex flex-col gap-4 md:gap-6 pt-6 md:pt-8 px-2">
         {SKELETON_WIDTHS.map((w, i) => (
           <div
             key={i}
-            className="h-8 rounded-full bg-white/10 animate-pulse"
+            className="h-6 md:h-8 rounded-full bg-white/10 animate-pulse"
             style={{ width: w }}
           />
         ))}
@@ -105,7 +104,7 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({
   if (!lines.length) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p className="text-white/30 text-lg font-medium">Lyrics not available</p>
+        <p className="text-white/30 text-base md:text-lg font-medium">Lyrics not available</p>
       </div>
     );
   }
@@ -113,8 +112,8 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({
   return (
     <div
       ref={containerRef}
-      className="no-scrollbar overflow-y-auto h-full"
-      style={{ paddingTop: '40vh', paddingBottom: '40vh' }}
+      className="no-scrollbar overflow-y-auto h-full px-4 md:px-0"
+      style={{ paddingTop: '35vh', paddingBottom: '35vh' }}
     >
       {lines.map((line, i) => {
         const isActive = i === activeIndex;
@@ -122,16 +121,14 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({
           <div
             key={i}
             ref={el => { lineRefs.current[i] = el; }}
-            style={{
-              fontSize    : '2.2rem',
-              lineHeight  : '1.4',
-              fontWeight  : isActive ? 800 : 600,
-              color       : isActive ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.25)',
-              marginBottom: '2rem',
-              transition  : 'color 0.4s ease, font-weight 0.3s ease',
-              cursor      : 'default',
-              userSelect  : 'none',
-            }}
+            className={`
+              text-xl sm:text-2xl md:text-3xl lg:text-[2.2rem]
+              leading-snug md:leading-[1.4]
+              mb-4 md:mb-8
+              transition-colors duration-300 ease-in-out
+              select-none cursor-default
+              ${isActive ? 'font-extrabold text-white' : 'font-semibold text-white/25'}
+            `}
           >
             {line.text}
           </div>

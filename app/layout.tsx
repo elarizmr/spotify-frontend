@@ -5,10 +5,11 @@ import './globals.css';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import BottomNav from '@/components/layout/BottomNav';
 import Providers from '@/components/Providers';
 import PlayerBar from '@/components/layout/Playerbar';
 import NowPlayingSidebar from '@/components/Nowplayingsidebar';
-import { usePlayerStore } from '@/components/store/usePlayerStore'; 
+import { usePlayerStore } from '@/components/store/usePlayerStore';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,9 +17,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
-  const { setLeftSidebar, setRightSidebar } = usePlayerStore(); 
+  const { setLeftSidebar, setRightSidebar, currentSong } = usePlayerStore();
 
- 
   useEffect(() => {
     setLeftSidebar(!sidebarCollapsed);
   }, [sidebarCollapsed]);
@@ -32,6 +32,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     pathname === '/register' ||
     pathname === '/admin';
 
+  // /library sehifesinde ozunun mobil basligi var, umumi Header-in
+  // mobil sethri (56px) bununla ust-uste dusmesin deye gizlenir.
+  const hideHeaderOnMobile = pathname === '/library';
+
   return (
     <html lang="en">
       <body className="bg-black text-white h-screen w-screen overflow-hidden font-sans flex flex-col p-2 gap-2">
@@ -42,17 +46,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           ) : (
             <>
-              <div className="h-[64px] w-full shrink-0">
+              <div
+                className={
+                  hideHeaderOnMobile
+                    ? 'hidden md:block h-[64px] w-full shrink-0'
+                    : 'h-[64px] w-full shrink-0'
+                }
+              >
                 <Header />
               </div>
 
               <div className="flex-1 flex gap-2 overflow-hidden min-h-0">
-                <Sidebar
-                  isCollapsed={sidebarCollapsed}
-                  onToggle={() => setSidebarCollapsed(prev => !prev)}
-                  isExpanded={sidebarExpanded}
-                  onExpandToggle={() => setSidebarExpanded(prev => !prev)}
-                />
+                <div className="hidden md:flex">
+                  <Sidebar
+                    isCollapsed={sidebarCollapsed}
+                    onToggle={() => setSidebarCollapsed(prev => !prev)}
+                    isExpanded={sidebarExpanded}
+                    onExpandToggle={() => setSidebarExpanded(prev => !prev)}
+                  />
+                </div>
 
                 {!sidebarExpanded && (
                   <div className="flex-1 bg-[#121212] rounded-lg overflow-hidden flex flex-col relative">
@@ -65,16 +77,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </div>
                 )}
 
-                <NowPlayingSidebar
-                  isOpen={sidebarOpen}
-                  onClose={() => setSidebarOpen(false)}
-                  onOpen={() => setSidebarOpen(true)}
-                />
+                <div className="hidden md:flex">
+                  <NowPlayingSidebar
+                    isOpen={sidebarOpen}
+                    onClose={() => setSidebarOpen(false)}
+                    onOpen={() => setSidebarOpen(true)}
+                  />
+                </div>
               </div>
 
-              <div className="h-[90px] w-full shrink-0 bg-black">
+              <div className={currentSong ? "h-[90px] w-full shrink-0 bg-black" : "h-0 md:h-[90px] w-full shrink-0 bg-black overflow-hidden"}>
                 <PlayerBar onToggleSidebar={() => setSidebarOpen(prev => !prev)} />
               </div>
+
+              <BottomNav />
             </>
           )}
         </Providers>

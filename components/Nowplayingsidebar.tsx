@@ -1,8 +1,10 @@
 'use client';
 import { API_URL } from "@/lib/config";
 import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { usePlayerStore } from './store/usePlayerStore';
 import { PanelRightClose, Ellipsis, Maximize2, Share2, ChevronLeft, ChevronRight, X, Check } from 'lucide-react';
+import LyricsPanel from './layout/LyricsPanel';
 
 // Şəkil olmadıqda istifadə olunan default cover (SVG data URI — əlavə fayl lazım deyil)
 const DEFAULT_COVER =
@@ -72,6 +74,23 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
       })
       .catch(() => {});
   }, [currentSong?._id]);
+
+  // Lyrics for the "scroll down to see lyrics" section below the About
+  // the artist card. Note: this shows the full lyrics text, but without
+  // the active-line sync highlight — the playback position currently
+  // lives only inside PlayerBar's local audio ref, not in the shared
+  // usePlayerStore, so it isn't available here yet.
+  const { data: lyrics, isLoading: lyricsLoading } = useQuery({
+    queryKey: ['sidebar-lyrics', currentSong?._id],
+    queryFn: async () => {
+      const res = await fetch(`/api/lyrics?songId=${currentSong!._id}`);
+      const data = await res.json();
+      return data.lyrics as string;
+    },
+    enabled: !!currentSong?._id,
+    staleTime: Infinity,
+    retry: 1,
+  });
 
   const handleFollow = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -252,6 +271,20 @@ export default function NowPlayingSidebar({ isOpen, onClose, onOpen }: NowPlayin
                     >
                       {loadingFollow ? '...' : isFollowing ? 'Following' : 'Follow'}
                     </button>
+                  </div>
+                </div>
+
+                {/* Lyrics — appears below the About card, revealed by
+                    scrolling down inside this panel. */}
+                <div className="mt-6 px-1">
+                  <h3 className="text-zinc-400 font-bold text-xs uppercase tracking-widest mb-3">Lyrics</h3>
+                  <div className="rounded-xl bg-[#1a1a1a]" style={{ minHeight: '320px' }}>
+                    <LyricsPanel
+                      lyrics={lyrics}
+                      currentTime={0}
+                      duration={0}
+                      isLoading={lyricsLoading}
+                    />
                   </div>
                 </div>
 
